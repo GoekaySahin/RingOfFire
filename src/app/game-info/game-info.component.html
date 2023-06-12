@@ -1,0 +1,8 @@
+<mat-card>
+  <mat-card-title [style.display]="'flex'" [style.justify-content]="'center'">
+    {{ card ? title : "Please pick a card" }}
+  </mat-card-title>
+  <mat-card-content>
+    {{ card ? description: 'Please click on the card stack to select the next card.' }}
+  </mat-card-content>
+</mat-card>
