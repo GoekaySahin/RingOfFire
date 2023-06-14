@@ -2,21 +2,21 @@ import { Component, OnInit, inject, Injectable } from '@angular/core';
 import { Game } from 'src/models/game';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
-import { GameInfoComponent } from '../game-info/game-info.component';
 import {
   Firestore,
   collection,
   collectionData,
-  CollectionReference,
+  /*   CollectionReference,
   DocumentData,
   addDoc,
   deleteDoc,
   doc,
-  updateDoc,
+  updateDoc, */
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
+/* import { initializeApp } from 'firebase/app';
+import { GameInfoComponent } from '../game-info/game-info.component';
+import { getFirestore } from 'firebase/firestore'; */
 
 @Component({
   selector: 'app-game',
@@ -50,9 +50,9 @@ export class GameComponent implements OnInit {
 
   newGame() {
     this.game = new Game();
-    const _doc = doc(this.games)
+    /*     const _doc = doc(this.games)
     updateDoc(_doc);
-    this.games.add({ Hallo: 'Welt' });
+    this.games.add({ Hallo: 'Welt' }); */
   }
 
   takeCard() {
