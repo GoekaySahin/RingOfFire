@@ -1,8 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, Injectable } from '@angular/core';
 import { Game } from 'src/models/game';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { GameInfoComponent } from '../game-info/game-info.component';
+import {
+  Firestore,
+  collection,
+  collectionData,
+  CollectionReference,
+  DocumentData,
+  addDoc,
+  deleteDoc,
+  doc,
+  updateDoc,
+} from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
 
 @Component({
   selector: 'app-game',
@@ -12,16 +26,33 @@ import { GameInfoComponent } from '../game-info/game-info.component';
 export class GameComponent implements OnInit {
   pickCardAnimation = false;
   game: Game | undefined;
+  games;
   currentCard: string = '';
+  items$: Observable<any[]>;
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, private firestore: Firestore) {
+    const aCollection = collection(this.firestore, 'games');
+    this.items$ = collectionData(aCollection);
+    this.games = this.items$;
+  }
+
   ngOnInit(): void {
     this.newGame();
+    this.items$.subscribe((game) => {
+      console.log(game);
+    });
+  }
+
+  update() {
+    /* const aCollection = doc(this.firestore, 'games');
+    return updateDoc(aCollection, { Hallo: 'Welt' }); */
   }
 
   newGame() {
     this.game = new Game();
-    console.log(this.game);
+    const _doc = doc(this.games)
+    updateDoc(_doc);
+    this.games.add({ Hallo: 'Welt' });
   }
 
   takeCard() {
@@ -41,6 +72,7 @@ export class GameComponent implements OnInit {
       this.pickCardAnimation = false;
     }, 1000);
   }
+
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogAddPlayerComponent);
 

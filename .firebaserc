@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "ringoffire-c976b": {
+      "hosting": {
+        "ringoffire": [
+          "ringoffire-c976b"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "ringoffire-c976b"
+  }
+}
