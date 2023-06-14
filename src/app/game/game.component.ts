@@ -6,17 +6,17 @@ import {
   Firestore,
   collection,
   collectionData,
-  /*   CollectionReference,
+  CollectionReference,
   DocumentData,
   addDoc,
   deleteDoc,
   doc,
-  updateDoc, */
+  updateDoc,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-/* import { initializeApp } from 'firebase/app';
+import { initializeApp } from 'firebase/app';
 import { GameInfoComponent } from '../game-info/game-info.component';
-import { getFirestore } from 'firebase/firestore'; */
+import { getFirestore } from 'firebase/firestore';
 
 @Component({
   selector: 'app-game',
@@ -29,10 +29,11 @@ export class GameComponent implements OnInit {
   games;
   currentCard: string = '';
   items$: Observable<any[]>;
+  aCollection;
 
   constructor(public dialog: MatDialog, private firestore: Firestore) {
-    const aCollection = collection(this.firestore, 'games');
-    this.items$ = collectionData(aCollection);
+    this.aCollection = collection(this.firestore, 'games');
+    this.items$ = collectionData(this.aCollection);
     this.games = this.items$;
   }
 
@@ -43,16 +44,10 @@ export class GameComponent implements OnInit {
     });
   }
 
-  update() {
-    /* const aCollection = doc(this.firestore, 'games');
-    return updateDoc(aCollection, { Hallo: 'Welt' }); */
-  }
-
   newGame() {
     this.game = new Game();
-    /*     const _doc = doc(this.games)
-    updateDoc(_doc);
-    this.games.add({ Hallo: 'Welt' }); */
+    const _aCollection = this.aCollection;
+    addDoc(_aCollection, { TESTNEU: 'GEHST?' });
   }
 
   takeCard() {
