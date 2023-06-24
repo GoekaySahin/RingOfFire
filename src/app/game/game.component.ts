@@ -17,6 +17,7 @@ import { Observable } from 'rxjs';
 import { initializeApp } from 'firebase/app';
 import { GameInfoComponent } from '../game-info/game-info.component';
 import { getFirestore } from 'firebase/firestore';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-game',
@@ -31,23 +32,30 @@ export class GameComponent implements OnInit {
   items$: Observable<any[]>;
   aCollection;
 
-  constructor(public dialog: MatDialog, private firestore: Firestore) {
+  constructor(
+    private route: ActivatedRoute,
+    public dialog: MatDialog,
+    private firestore: Firestore
+  ) {
     this.aCollection = collection(this.firestore, 'games');
     this.items$ = collectionData(this.aCollection);
     this.games = this.items$;
   }
 
   ngOnInit(): void {
-    this.newGame();
-    this.items$.subscribe((game) => {
-      console.log(game);
+    this.newGame(); 
+    this.route.paramMap.subscribe((params) => {
+      console.log(params);
     });
+    /*     this.items$.subscribe((game) => {
+      console.log(game);
+    }); */
   }
 
   newGame() {
     this.game = new Game();
     const _aCollection = this.aCollection;
-    addDoc(_aCollection, { TESTNEU: 'GEHST?' });
+    addDoc(_aCollection, this.game.toJson());
   }
 
   takeCard() {
@@ -61,6 +69,7 @@ export class GameComponent implements OnInit {
     this.game.currentPlayer++;
     this.game.currentPlayer =
       this.game.currentPlayer % this.game.players.length;
+    console.log(this.game.players);
 
     setTimeout(() => {
       this.game.playedCards.push(this.currentCard);
@@ -74,6 +83,7 @@ export class GameComponent implements OnInit {
     dialogRef.afterClosed().subscribe((name: string) => {
       if (name && name.length > 0) {
         this.game.players.push(name);
+        console.log(this.game.players);
       }
     });
   }
