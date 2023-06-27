@@ -11,7 +11,7 @@ import {
   addDoc,
   deleteDoc,
 } from '@angular/fire/firestore';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 
 import { Observable } from 'rxjs';
 import { initializeApp } from 'firebase/app';
@@ -73,9 +73,9 @@ export class GameComponent implements OnInit {
     if (!this.pickCardAnimation) {
       this.currentCard = this.game.stack.pop();
       this.pickCardAnimation = true;
+      this.saveGame();
       console.log(this.currentCard);
       console.log('a' + this.game.playedCards);
-      this.saveGame();
     }
 
     this.game.currentPlayer++;
@@ -96,8 +96,8 @@ export class GameComponent implements OnInit {
     dialogRef.afterClosed().subscribe((name: string) => {
       if (name && name.length > 0) {
         this.game.players.push(name);
-        console.log(this.game.players);
         this.saveGame();
+        console.log(this.game.players);
       }
     });
   }
@@ -107,6 +107,7 @@ export class GameComponent implements OnInit {
     const docRef = doc(this.db, 'games', this.gameId);
 
     await updateDoc(docRef, this.game.toJson());
+
   }
 }
 
