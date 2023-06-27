@@ -3,6 +3,10 @@ export class Game {
   public stack: string[] = [];
   public playedCards: string[] = [];
   public currentPlayer: number = 0;
+  /*   static currentPlayer: number;
+  static playedCards: string[];
+  static players: string[];
+  static stack: string[]; */
 
   constructor() {
     for (let i = 1; i < 13; i++) {
@@ -19,7 +23,7 @@ export class Game {
     let playedCards;
 
     return {
-      playersDex: this.players,
+      players: this.players,
       stack: this.stack,
       playedCards: this.playedCards,
       currentPlayer: this.currentPlayer,

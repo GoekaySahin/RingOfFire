@@ -12,13 +12,14 @@ import {
   deleteDoc,
   updateDoc,
 } from '@angular/fire/firestore';
-import { doc, getDocFromCache, getDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 
 import { Observable } from 'rxjs';
 import { initializeApp } from 'firebase/app';
 import { GameInfoComponent } from '../game-info/game-info.component';
 import { getFirestore } from 'firebase/firestore';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-game',
@@ -32,6 +33,8 @@ export class GameComponent implements OnInit {
   currentCard: string = '';
   items$: Observable<any[]>;
   aCollection: any;
+  app = initializeApp(environment.firebase);
+  db = getFirestore(this.app);
 
   constructor(
     private route: ActivatedRoute,
@@ -43,23 +46,28 @@ export class GameComponent implements OnInit {
     this.games = this.items$;
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.newGame();
-    this.route.params.subscribe((params) => {
+
+    this.route.params.subscribe(async (params) => {
       console.log(params['id']);
-      this.aCollection
-        .doc(params['id'])
-        .valueChanges()
-        .subscribe('Game upate ', this.game);
+      const docRef = doc(this.db, 'games', params['id']);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        console.log('Document data:', docSnap.data());
+        this.game.currentPlayer = docSnap.data()['currentPlayer'];
+        this.game.playedCards = docSnap.data()['playedCards'];
+        this.game.players = docSnap.data()['players'];
+        this.game.stack = docSnap.data()['stack'];
+      } else {
+        // docSnap.data() will be undefined in this case
+        console.log('No such document!');
+      }
     });
   }
 
-  /*       this.items$.doc(params['id']).subscribe((game) => {
-          console.log(game); */
   newGame() {
     this.game = new Game();
-    /*     const _aCollection = this.aCollection;
-    addDoc(_aCollection, this.game.toJson()); */
   }
 
   takeCard() {
