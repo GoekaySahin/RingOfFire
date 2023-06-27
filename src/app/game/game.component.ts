@@ -11,7 +11,7 @@ import {
   addDoc,
   deleteDoc,
 } from '@angular/fire/firestore';
-import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, onSnapshot } from 'firebase/firestore';
 
 import { Observable } from 'rxjs';
 import { initializeApp } from 'firebase/app';
@@ -51,18 +51,27 @@ export class GameComponent implements OnInit {
 
     this.route.params.subscribe(async (params) => {
       this.gameId = params['id'];
+      
       const docRef = doc(this.db, 'games', this.gameId);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        this.game.currentPlayer = docSnap.data()['currentPlayer'];
-        this.game.playedCards = docSnap.data()['playedCards'];
-        this.game.players = docSnap.data()['players'];
-        this.game.stack = docSnap.data()['stack'];
-      } else {
-        // docSnap.data() will be undefined in this case
-        console.log('No such document!');
-      }
-    });
+      const unsub = onSnapshot(
+        doc(this.db, 'games', this.gameId),
+        { includeMetadataChanges: true },
+        async (doc) => {
+          const source = doc.metadata.hasPendingWrites ? 'Local' : 'Server';
+          const docSnap = await getDoc(docRef);
+          console.log('Current data: ', doc.data());
+          if (docSnap.exists()) {
+            this.game.currentPlayer = docSnap.data()['currentPlayer'];
+            this.game.playedCards = docSnap.data()['playedCards'];
+            this.game.players = docSnap.data()['players'];
+            this.game.stack = docSnap.data()['stack'];
+          } else {
+            // docSnap.data() will be undefined in this case
+            console.log('No such document!');
+          }
+        });
+        }
+      );
   }
 
   newGame() {
