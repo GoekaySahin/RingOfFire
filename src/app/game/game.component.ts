@@ -73,21 +73,21 @@ export class GameComponent implements OnInit {
     if (!this.pickCardAnimation) {
       this.currentCard = this.game.stack.pop();
       this.pickCardAnimation = true;
-      this.saveGame();
       console.log(this.currentCard);
       console.log('a' + this.game.playedCards);
-    }
 
-    this.game.currentPlayer++;
-    this.game.currentPlayer =
-      this.game.currentPlayer % this.game.players.length;
-    console.log(this.game.players);
-
-    setTimeout(() => {
-      this.game.playedCards.push(this.currentCard);
-      this.pickCardAnimation = false;
+      this.game.currentPlayer++;
+      this.game.currentPlayer =
+        this.game.currentPlayer % this.game.players.length;
+      console.log(this.game.players);
       this.saveGame();
-    }, 1000);
+
+      setTimeout(() => {
+        this.game.playedCards.push(this.currentCard);
+        this.pickCardAnimation = false;
+        this.saveGame();
+      }, 1000);
+    }
   }
 
   openDialog(): void {
@@ -97,7 +97,6 @@ export class GameComponent implements OnInit {
       if (name && name.length > 0) {
         this.game.players.push(name);
         this.saveGame();
-        console.log(this.game.players);
       }
     });
   }
@@ -107,9 +106,5 @@ export class GameComponent implements OnInit {
     const docRef = doc(this.db, 'games', this.gameId);
 
     await updateDoc(docRef, this.game.toJson());
-
   }
 }
-
-/*     docSnap.updateDoc(this.game.toJson());
- */
