@@ -10,9 +10,10 @@ import {
   DocumentData,
   addDoc,
   deleteDoc,
-  doc,
   updateDoc,
 } from '@angular/fire/firestore';
+import { doc, getDocFromCache, getDoc } from 'firebase/firestore';
+
 import { Observable } from 'rxjs';
 import { initializeApp } from 'firebase/app';
 import { GameInfoComponent } from '../game-info/game-info.component';
@@ -30,7 +31,7 @@ export class GameComponent implements OnInit {
   games;
   currentCard: string = '';
   items$: Observable<any[]>;
-  aCollection;
+  aCollection: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -43,19 +44,22 @@ export class GameComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.newGame(); 
-    this.route.paramMap.subscribe((params) => {
-      console.log(params);
+    this.newGame();
+    this.route.params.subscribe((params) => {
+      console.log(params['id']);
+      this.aCollection
+        .doc(params['id'])
+        .valueChanges()
+        .subscribe('Game upate ', this.game);
     });
-    /*     this.items$.subscribe((game) => {
-      console.log(game);
-    }); */
   }
 
+  /*       this.items$.doc(params['id']).subscribe((game) => {
+          console.log(game); */
   newGame() {
     this.game = new Game();
-    const _aCollection = this.aCollection;
-    addDoc(_aCollection, this.game.toJson());
+    /*     const _aCollection = this.aCollection;
+    addDoc(_aCollection, this.game.toJson()); */
   }
 
   takeCard() {
