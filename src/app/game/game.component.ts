@@ -10,9 +10,8 @@ import {
   DocumentData,
   addDoc,
   deleteDoc,
-  updateDoc,
 } from '@angular/fire/firestore';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 
 import { Observable } from 'rxjs';
 import { initializeApp } from 'firebase/app';
@@ -35,6 +34,7 @@ export class GameComponent implements OnInit {
   aCollection: any;
   app = initializeApp(environment.firebase);
   db = getFirestore(this.app);
+  gameId: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -50,11 +50,10 @@ export class GameComponent implements OnInit {
     this.newGame();
 
     this.route.params.subscribe(async (params) => {
-      console.log(params['id']);
-      const docRef = doc(this.db, 'games', params['id']);
+      this.gameId = params['id'];
+      const docRef = doc(this.db, 'games', this.gameId);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        console.log('Document data:', docSnap.data());
         this.game.currentPlayer = docSnap.data()['currentPlayer'];
         this.game.playedCards = docSnap.data()['playedCards'];
         this.game.players = docSnap.data()['players'];
@@ -76,6 +75,7 @@ export class GameComponent implements OnInit {
       this.pickCardAnimation = true;
       console.log(this.currentCard);
       console.log('a' + this.game.playedCards);
+      this.saveGame();
     }
 
     this.game.currentPlayer++;
@@ -86,6 +86,7 @@ export class GameComponent implements OnInit {
     setTimeout(() => {
       this.game.playedCards.push(this.currentCard);
       this.pickCardAnimation = false;
+      this.saveGame();
     }, 1000);
   }
 
@@ -96,7 +97,18 @@ export class GameComponent implements OnInit {
       if (name && name.length > 0) {
         this.game.players.push(name);
         console.log(this.game.players);
+        this.saveGame();
       }
     });
   }
+
+  async saveGame() {
+    this.aCollection = collection(this.firestore, 'games');
+    const docRef = doc(this.db, 'games', this.gameId);
+
+    await updateDoc(docRef, this.game.toJson());
+  }
 }
+
+/*     docSnap.updateDoc(this.game.toJson());
+ */
