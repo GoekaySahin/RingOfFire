@@ -7,6 +7,6 @@ export const environment = {
     projectId: 'ringof-4e427',
     storageBucket: 'ringof-4e427.appspot.com',
     messagingSenderId: '384138021403',
-    appId: '1:384138021403:web:be0764b956e7025f0306be',
+    appId: '1:384138021403:web:1cfe4fb4c8117ea30306be',
   },
 };

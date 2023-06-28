@@ -1,20 +1,4 @@
 {
-  "targets": {
-    "ringoffire-4e427": {
-      "hosting": {
-        "ringoffire": [
-          "ringoffire-4e427"
-        ]
-      }
-    },
-    "ringof-4e427": {
-      "hosting": {
-        "ringoffire": [
-          "ringof-4e427"
-        ]
-      }
-    }
-  },
   "projects": {
     "default": "ringof-4e427"
   }
