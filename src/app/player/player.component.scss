@@ -22,5 +22,7 @@
 }
 
 .player-active {
+  position: relative;
   background-color: orange;
+  z-index: 5;
 }

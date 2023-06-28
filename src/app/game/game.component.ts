@@ -57,7 +57,7 @@ export class GameComponent implements OnInit {
         async (doc) => {
           const source = doc.metadata.hasPendingWrites ? 'Local' : 'Server';
           const docSnap = await getDoc(docRef);
-          console.log('Current data: ', doc.data());
+          //console.log('Current data: ', doc.data());
           if (docSnap.exists()) {
             this.game.currentPlayer = docSnap.data()['currentPlayer'];
             this.game.playedCards = docSnap.data()['playedCards'];
@@ -67,7 +67,7 @@ export class GameComponent implements OnInit {
             this.game.currentCard = docSnap.data()['currentCard'];
           } else {
             // docSnap.data() will be undefined in this case
-            console.log('No such document!');
+            //console.log('No such document!');
           }
         }
       );
@@ -82,15 +82,15 @@ export class GameComponent implements OnInit {
     if (!this.game.pickCardAnimation) {
       this.game.currentCard = this.game.stack.pop();
       this.game.pickCardAnimation = true;
-      this.saveGame();
-      console.log(this.game.currentCard);
-      console.log('a' + this.game.playedCards);
+      /* console.log(this.game.currentCard);
+      console.log('a' + this.game.playedCards); */
 
       this.game.currentPlayer++;
       this.game.currentPlayer =
         this.game.currentPlayer % this.game.players.length;
-      console.log(this.game.players);
+      /* console.log(this.game.players); */
 
+      this.saveGame();
       setTimeout(() => {
         this.game.playedCards.push(this.game.currentCard);
         this.game.pickCardAnimation = false;
