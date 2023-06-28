@@ -26,10 +26,8 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./game.component.scss'],
 })
 export class GameComponent implements OnInit {
-  pickCardAnimation = false;
   game: Game | undefined;
   games;
-  currentCard: string = '';
   items$: Observable<any[]>;
   aCollection: any;
   app = initializeApp(environment.firebase);
@@ -51,7 +49,7 @@ export class GameComponent implements OnInit {
 
     this.route.params.subscribe(async (params) => {
       this.gameId = params['id'];
-      
+
       const docRef = doc(this.db, 'games', this.gameId);
       const unsub = onSnapshot(
         doc(this.db, 'games', this.gameId),
@@ -65,13 +63,15 @@ export class GameComponent implements OnInit {
             this.game.playedCards = docSnap.data()['playedCards'];
             this.game.players = docSnap.data()['players'];
             this.game.stack = docSnap.data()['stack'];
+            this.game.pickCardAnimation = docSnap.data()['pickCardAnimation'];
+            this.game.currentCard = docSnap.data()['currentCard'];
           } else {
             // docSnap.data() will be undefined in this case
             console.log('No such document!');
           }
-        });
         }
       );
+    });
   }
 
   newGame() {
@@ -79,21 +79,21 @@ export class GameComponent implements OnInit {
   }
 
   takeCard() {
-    if (!this.pickCardAnimation) {
-      this.currentCard = this.game.stack.pop();
-      this.pickCardAnimation = true;
-      console.log(this.currentCard);
+    if (!this.game.pickCardAnimation) {
+      this.game.currentCard = this.game.stack.pop();
+      this.game.pickCardAnimation = true;
+      this.saveGame();
+      console.log(this.game.currentCard);
       console.log('a' + this.game.playedCards);
 
       this.game.currentPlayer++;
       this.game.currentPlayer =
         this.game.currentPlayer % this.game.players.length;
       console.log(this.game.players);
-      this.saveGame();
 
       setTimeout(() => {
-        this.game.playedCards.push(this.currentCard);
-        this.pickCardAnimation = false;
+        this.game.playedCards.push(this.game.currentCard);
+        this.game.pickCardAnimation = false;
         this.saveGame();
       }, 1000);
     }
