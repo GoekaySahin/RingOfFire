@@ -70,9 +70,23 @@
   left: 140px;
   right: 140px;
   background-color: white;
+
+  @media (width < 960px) {
+    right: 0;
+    left: 0;
+    bottom: 0;
+  }
 }
 
 .mat-mdc-card-subtitle {
   display: flex !important;
   justify-content: center !important;
+}
+
+.mat {
+  height: 115px;
+}
+
+mat-card {
+  height: 200px;
 }

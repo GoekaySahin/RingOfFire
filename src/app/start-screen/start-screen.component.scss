@@ -22,8 +22,18 @@
 
   img {
     width: 30vw;
-    height: auto;
+    height: 60px;
     border-radius: 8px;
+
+    @media (width < 720px) {
+      height: 57px;
+      width: 280px;
+    }
+
+    @media (width < 720px) {
+      height: 37px;
+      width: 200px;
+    }
 
     &:hover {
       cursor: pointer;
