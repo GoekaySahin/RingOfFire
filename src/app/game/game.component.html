@@ -3,8 +3,17 @@
   [ngStyle]="{ 'top.vh': (1 + i) * 8 }"
   [name]="player"
   [playerActive]="i == game.currentPlayer"
-  class="player-position"
+  class="player-position hide-mobile"
 ></app-player>
+
+<div class="player-mobile-view hide-desktop">
+  <app-player-mobile
+    *ngFor="let player of game.players; let i = index"
+    [ngStyle]="{ 'left.vh': (1 + i) * 2, 'padding-right.vw': 2 }"
+    [name]="player"
+    [playerActive]="i == game.currentPlayer"
+  ></app-player-mobile>
+</div>
 
 <div class="field">
   <div class="card-stack">

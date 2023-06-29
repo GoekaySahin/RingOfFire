@@ -1,0 +1,40 @@
+.playerbox {
+  width: 300px;
+  height: 70px;
+  align-items: center;
+  background-color: rgb(70 63 63 / 70%);
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
+
+  span {
+    font-size: 32px;
+    margin-left: 16px;
+  }
+
+  img {
+    padding-left: 8px;
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 100%;
+  }
+}
+
+.player-active {
+  position: relative;
+  background-color: orange;
+  z-index: 5;
+}
+
+@media (width <= 720px) {
+  .playerbox {
+    border-top-left-radius: 0px;
+    border-bottom-right-radius: 100px;
+    border-bottom-left-radius: 100px;
+    display: flex;
+    flex-direction: column-reverse;
+    width: 31vw;
+    height: 100px;
+    justify-content: space-evenly;
+  }
+}

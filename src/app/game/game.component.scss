@@ -90,3 +90,14 @@
 mat-card {
   height: 200px;
 }
+@media (width <= 720px) {
+  .player-mobile-view {
+    position: absolute;
+    overflow-y: hidden;
+    overflow-x: auto;
+    top: 0px;
+    left: 0;
+    right: 0;
+    height: 12vh;
+  }
+}

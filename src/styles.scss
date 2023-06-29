@@ -2,5 +2,27 @@ body {
   margin: 0;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+@media (width <= 720px) {
+  .hide-mobile {
+    display: none;
+  }
+}
+@media (width >= 721px) {
+  .hide-desktop {
+    display: none;
+  }
+}
+@media (width <= 720px) {
+  .hide-desktop {
+    display: flex;
+  }
+}
