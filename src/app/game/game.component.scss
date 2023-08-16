@@ -73,9 +73,10 @@
   bottom: 32px;
   left: 140px;
   right: 140px;
+  border-radius: 8px;
   background-color: white;
 
-  @media (width < 960px) {
+  @media (width <= 960px) {
     right: 0;
     left: 0;
     bottom: 0;
@@ -94,6 +95,7 @@
 mat-card {
   height: 200px;
 }
+
 @media (width <= 720px) {
   .player-mobile-view {
     position: absolute;
@@ -103,5 +105,11 @@ mat-card {
     left: 0;
     right: 0;
     height: 12vh;
+  }
+}
+
+@media (width <= 960px) {
+  .btn-add {
+    bottom: 144px;
   }
 }
